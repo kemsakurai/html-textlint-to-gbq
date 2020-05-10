@@ -27,7 +27,8 @@ module.exports = function(bucketName) {
 };
 
 function uploadTo(bucket, bucketName, destination) {
-  bucket.upload(filename, {destination: destination, gzip: true}).then((res) => {
+  bucket.upload(filename,
+      {destination: destination, gzip: true}).then((res) => {
     console.log(res[0].metadata);
     console.log(`${filename} uploaded to ${bucketName}.`);
   }).catch((err) => {
