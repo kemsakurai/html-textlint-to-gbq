@@ -12,19 +12,25 @@ module.exports = function(url) {
   const promise = getBeautifiedHtmlFromUrl(url);
   promise.then((html) => {
     engine.executeOnText(html, '.html').then((results) => {
-      const decodedUrl = decodeURI(url);
-      // 検証対象のURLの紐づくエラーの削除
-      TextlintMessageRepository.deleteByLoc(decodedUrl);
-      if (engine.isErrorResults(results)) {
-        // エラーが検出されていれば登録
-        for (const message of results[0].messages) {
-          TextlintMessageRepository.save(decodedUrl, message);
-        }
-      }
+      return saveTextLintResults(url, results);
     });
   }).catch((e) => console.log(e));
   return promise;
 };
+
+async function saveTextLintResults(url, results) {
+  const promises = [];
+  const decodedUrl = decodeURI(url);
+  // 検証対象のURLの紐づくエラーの削除
+  await TextlintMessageRepository.deleteByLoc(decodedUrl);
+  if (engine.isErrorResults(results)) {
+    // エラーが検出されていれば登録
+    for (const message of results[0].messages) {
+      promises.push(await TextlintMessageRepository.save(decodedUrl, message));
+    }
+  }
+  return promises;
+}
 
 const beautifyOptions = {
   indent_size: 2,
