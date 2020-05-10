@@ -51,7 +51,8 @@ class TextlintMessageRepository {
       index: textlintMessage.index,
       severity: textlintMessage.severity,
       fix_text: textlintMessage.fix ? textlintMessage.fix.text : null,
-      fix_range_start: textlintMessage.fix ? textlintMessage.fix.range[0] : null,
+      fix_range_start:
+          textlintMessage.fix ? textlintMessage.fix.range[0] : null,
       fix_range_end: textlintMessage.fix ? textlintMessage.fix.range[1] : null,
     });
   }

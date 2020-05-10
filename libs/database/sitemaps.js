@@ -28,7 +28,9 @@ class Sitemap {
     if (!sitemapModel) {
       return null;
     }
-    return new Sitemap(sitemapModel.loc, sitemapModel.domain, sitemapModel.path, sitemapModel.lastmod, sitemapModel.status);
+    return new Sitemap(sitemapModel.loc,
+        sitemapModel.domain, sitemapModel.path,
+        sitemapModel.lastmod, sitemapModel.status);
   }
 }
 

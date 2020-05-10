@@ -57,7 +57,8 @@ async function filterTargetSave(siteMapResults) {
   const results = [];
   for (const siteMapResult of siteMapResults) {
     const sitemap = await SitemapsRepository.selectByLoc(siteMapResult.loc);
-    if (sitemap && sitemap.loc === siteMapResult.loc && (!sitemap.lastmod || sitemap.lastmod === siteMapResult.lastmod)) {
+    if (sitemap && sitemap.loc === siteMapResult.loc &&
+        (!sitemap.lastmod || sitemap.lastmod === siteMapResult.lastmod)) {
       continue;
     }
     results.push(Sitemap.constructBeforeHtmlLint(siteMapResult.loc,
