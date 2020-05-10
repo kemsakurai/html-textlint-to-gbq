@@ -1,6 +1,6 @@
 name: jest
 on:
-  pull_request:
+  push:
     types: [opened, synchronize]
 jobs:
   test:
