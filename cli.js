@@ -30,8 +30,8 @@ program.command('dumpHtmlLintMessages')
 program.command('uploadDataToGcs <bucketName>')
     .description('Upload HTML lint messages json to Google CLoud Storage.')
     .option('-d, --destination <destination>', 'Upload file destination')
-    .on("option:destination", (destination) => {
-        process.env["destination"] = destination;
+    .on('option:destination', (destination) => {
+      process.env['destination'] = destination;
     })
     .action(uploadDataToGcs);
 

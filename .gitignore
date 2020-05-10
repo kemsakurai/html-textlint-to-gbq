@@ -2,3 +2,4 @@ node_modules
 db.sqlite
 to_gbq/textlint_messages.json
 .idea
+coverage
