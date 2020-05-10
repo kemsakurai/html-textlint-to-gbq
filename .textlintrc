@@ -1,0 +1,8 @@
+{
+    "plugins": [
+        "html"
+    ],
+    "rules": {
+       "preset-ja-technical-writing": true
+    }
+}
