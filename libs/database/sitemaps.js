@@ -80,8 +80,8 @@ class SitemapsRepository {
     return SitemapModel.findAll({
       where: {
         status: Status.BEFORE_HTML_LINT,
-        limit: limit,
       },
+      limit: limit,
     }).then((sitemapModels) => {
       for (const elem of sitemapModels) {
         results.push(Sitemap.constructBySitemapModel(elem));
