@@ -55,7 +55,8 @@ async function loadJSONFromGCS(bucketName, filename, datasetId, tableId) {
       throw err;
     });
   } else {
-    [job] = await loadInternal(dataset, tableId, bucketName, filename, metadata);
+    [job] = await loadInternal(dataset,
+        tableId, bucketName, filename, metadata);
   }
   console.log(`Job ${job.id} completed.`);
 
