@@ -15,4 +15,4 @@ jobs:
           reporter: github-check
           eslint_flags: './**/*.{vue,ts,js}'
       - name: eslint
-        run: npm run eslint src/ test/ cli.js
+        run: npm run eslint libs/ test/ cli.js
