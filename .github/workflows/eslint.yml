@@ -13,6 +13,6 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-check
-          eslint_flags: 'src/ test/ cli.js'
+          eslint_flags: './**/*.{vue,ts,js}'
       - name: eslint
-        run: npm run eslint
+        run: npm run eslint src/ test/ cli.js
