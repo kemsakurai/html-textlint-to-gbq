@@ -1,9 +1,13 @@
 const {SitemapsRepository, Status} = require('../database/sitemaps.js');
 const htmlLintFromUrl = require('./htmlLintFromUrl.js');
 
-
-module.exports = function() {
-  const promise = SitemapsRepository.selectByStatusBeforeHtmlLint();
+module.exports = function(limit) {
+  let promise;
+  if (limit === null || limit === '') {
+    promise = SitemapsRepository.selectByStatusBeforeHtmlLint();
+  } else {
+    promise = SitemapsRepository.selectByStatusBeforeHtmlLintWithLimit(limit);
+  }
   // Data更新
   promise.then((results) => htmlLintBulk(results));
   return promise;

@@ -75,6 +75,20 @@ class SitemapsRepository {
   static async selectByStatusBeforeHtmlLint() {
     return this.selectByStatus(Status.BEFORE_HTML_LINT);
   }
+  static async selectByStatusBeforeHtmlLintWithLimit(limit) {
+    const results = [];
+    return SitemapModel.findAll({
+      where: {
+        status: Status.BEFORE_HTML_LINT,
+        limit: limit,
+      },
+    }).then((sitemapModels) => {
+      for (const elem of sitemapModels) {
+        results.push(Sitemap.constructBySitemapModel(elem));
+      }
+      return results;
+    });
+  }
 
   static async selectByStatus(status) {
     const results = [];

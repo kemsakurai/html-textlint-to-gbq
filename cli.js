@@ -15,7 +15,7 @@ program.command('saveSitemap <url>')
     .description('Save Sitemap specified by argument to database.')
     .action(saveSitemap);
 
-program.command('htmlLintFromSitemap')
+program.command('htmlLintFromSitemap [limit]')
     .description('Lint HTML from saved sitemap\'s data.')
     .action(htmlLintFromSitemap);
 
