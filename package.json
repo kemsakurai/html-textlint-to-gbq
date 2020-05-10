@@ -1,0 +1,30 @@
+{
+  "name": "html-textlint-to-gbq",
+  "version": "1.0.0",
+  "description": "A tool that performs Textlint checks on HTML documents and registers the results in BigQuery.",
+  "main": "cli.js",
+  "scripts": {
+    "test": "echo",
+    "start": "node cli.js"
+  },
+  "keywords": [
+    "textlint",
+    "bigquery"
+  ],
+  "author": "K.Sakurai",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/bigquery": "^4.7.0",
+    "@google-cloud/storage": "^4.7.0",
+    "commander": "^5.1.0",
+    "js-beautify": "^1.11.0",
+    "sequelize": "^5.21.7",
+    "sqlite3": "^4.2.0",
+    "textlint": "^11.6.3",
+    "textlint-rule-preset-ja-technical-writing": "^3.1.3",
+    "xml2js": "^0.4.23"
+  },
+  "devDependencies": {
+    "textlint-plugin-html": "^0.2.0"
+  }
+}
