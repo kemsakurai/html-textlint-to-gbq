@@ -79,6 +79,10 @@ node cli.js saveSitemap https://www.monotalk.xyz/sitemap.xml
 ```console
 node cli.js htmlLintFromSitemap
 ```
+引数を指定すると、件数の制限ができる。    
+```condole
+node cli.js htmlLintFromSitemap 20
+```
 
 3. textlint の実行結果を、NEWLINE_DELIMITED_JSON 形式で取得  
 ```console
@@ -97,4 +101,3 @@ npm start loadDataToGbq monotalk.appspot.com \
 "Document Statistics/textlint_messages.json" \
 Document_Statistics textlint_messages
 ```
-

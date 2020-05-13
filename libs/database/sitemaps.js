@@ -16,8 +16,28 @@ class Sitemap {
     this.loc = loc;
     this.domain = domain;
     this.path = path;
-    this.lastmod = lastmod;
+    this._lastmod = lastmod;
     this.status = status;
+  }
+
+  /**
+   * Date型でない場合は、Date型に変換して設定する
+   * @param {any} lastmod
+   */
+  set lastmod(value) {
+    if (value === undefined || value === null) {
+      this._lastmod = value;
+      return;
+    }
+    if (typeof value != 'object') {
+      this._lastmod= new Date(value);
+    } else {
+      this._lastmod = value;
+    }
+  }
+
+  get lastmod() {
+    return this._lastmod;
   }
 
   static constructBeforeHtmlLint(loc, domain, path, lastmod) {
