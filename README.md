@@ -91,13 +91,95 @@ node cli.js dumpHtmlLintMessages
 
 4. NEWLINE_DELIMITED_JSON 形式で取得したデータを Google Cloud Storage にアップロード     
 ```console
+export GOOGLE_APPLICATION_CREDENTIALS="/home/usr/.credentials/gbq.json"
+
 node cli.js uploadDataToGcs monotalk.appspot.com \
 -- -d "Document Statistics/textlint_messages.json"
 ```
 
 5. Google Cloud Storage のデータを Goolge Big Query にロードする          
 ```console
+export GOOGLE_APPLICATION_CREDENTIALS="/home/usr/.credentials/gbq.json"
+
 npm start loadDataToGbq monotalk.appspot.com \
 "Document Statistics/textlint_messages.json" \
 Document_Statistics textlint_messages
+```
+
+----------
+## Scheduling     
+crontab でのスケジューリング例です。       
+
+* **crontab からの起動スクリプト**      
+```script
+#!/bin/sh
+shellName=$(basename $0)
+homeDir=$(pwd)
+toolHome="/home/monotalk_job_usr/tools/html-textlint-to-gbq"
+PATH="/home/monotalk_job_usr/.nvm/versions/node/v12.1.0/bin:$PATH"
+
+sub_help(){
+    echo "Usage: $shellName <subcommand> [options]\n"
+    echo "Subcommands:"
+    echo "    loadDataToGbq   Load data to Google Big Query."
+    echo "    htmlLint Lint html from sitemap's url."
+    echo "    saveSitemap Save url from sitemap."
+    echo ""
+    echo "For help with each subcommand run:"
+    echo "$shellName <subcommand> -h|--help"
+    echo ""
+}
+
+sub_loadDataToGbq(){
+    set -eu
+    export GOOGLE_APPLICATION_CREDENTIALS="/home/usr/.credentials/gbq.json"
+    cd $toolHome
+    node cli.js htmlLintFromSitemap 10
+    node cli.js uploadDataToGcs monotalk.appspot.com -- -d "Document Statistics/textlint_messages.json"
+    npm start loadDataToGbq monotalk.appspot.com "Document Statistics/textlint_messages.json" Document_Statistics textlint_messages
+    cd $homeDir
+}
+
+sub_htmlLint(){
+    cd $toolHome
+    node cli.js htmlLintFromSitemap 10
+    cd $homeDir
+}
+
+sub_saveSitemap(){
+    cd $toolHome
+    node cli.js saveSitemap https://www.monotalk.xyz/sitemap.xml
+    cd $homeDir
+}
+
+for subcommand in "$@"; do
+    case $subcommand in
+        "" | "-h" | "--help")
+            sub_help
+            ;;
+        *)
+            shift
+            sub_${subcommand} $@
+            returnCode=$?
+            if [ $returnCode = 127 ]; then
+                echo "Error: '$subcommand' is not a known subcommand." >&2
+                echo "       Run '$shellName --help' for a list of known subcommands." >&2
+                exit 1
+            elif [ $returnCode = 1 ]; then
+                echo "Error: '$subcommand' is failed.." >&2
+                exit 1            
+            fi
+            ;;
+    esac
+done
+```
+
+* **crontab**     
+```bash
+SCRIPT_HOME="/home/usr/scripts"
+LOG_DIR="/var/log/"
+
+25 * * * * /bin/sh $SCRIPT_HOME/run_html_text_lint_to_gbq.sh htmlLint >> $LOG_DIR/run_html_text_lint_to_gbq_htmlLint.log
+20 03 * * * /bin/sh $SCRIPT_HOME/run_html_text_lint_to_gbq.sh saveSitemap >> $LOG_DIR/run_html_text_lint_to_gbq_saveSitemap.log
+40 03 * * 6 /bin/sh $SCRIPT_HOME/run_html_text_lint_to_gbq.sh loadDataToGbq　>> $LOG_DIR/run_html_text_lint_to_gbq_loadDataToGbq.log                  
 ```
